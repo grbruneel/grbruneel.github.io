@@ -1,5 +1,5 @@
 import tkinter as tk
-#Another comment
+
 window = tk.Tk()
 window.title("Cycles Home Screen")
 window.geometry("400x300")
