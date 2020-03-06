@@ -39,7 +39,7 @@ class resetScreen:
                     self.number_entry = self.number_entry[:-1]
     
             elif x == " ":
-               self.number_display = self.number_display
+               self.number_display = "0"
 
             else: # Number Entry
                    if self.number_entry == "0":
@@ -56,6 +56,10 @@ class resetScreen:
         def done_action():
             window.destroy()
             window.quit()
+
+        def count_to_zero():
+            self.cycle_data.count = 0
+            cycle_count_number.config(text=self.cycle_data.count)
         
 
 # Make set of 12 buttons to act as number pad
@@ -86,5 +90,8 @@ class resetScreen:
 
         done_button = tk.Button(window, text="Done", command=done_action)
         done_button.grid(row=0, column=3, columnspan=2)
+
+        reset_count = tk.Button(window, text="Set Count 0", command=count_to_zero)
+        reset_count.grid(row=3, column=4)
 
         window.mainloop()
