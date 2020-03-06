@@ -29,18 +29,18 @@ def green():
     pi.output(21, False)
     cycle_data.increment()
     cycle_count_number.config(text=cycle_data.count)
-    job = window.after(0, green())
+    job = window.after(0, green)
 
 
 def red():
     global job
-    job.after_cancel(job)
+    window.after_cancel(job)
 
 
 def reset_settings():
+    red()
     global cycle_data
     reset_data.show(cycle_data)
-    print("here")
     cycle_limit_number.config(text=cycle_data.max)
 
 
