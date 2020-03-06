@@ -1,6 +1,14 @@
 import tkinter as tk
 from resetScreen import resetScreen
 from Cycles import Cycles
+import RPi.GPIO as pi
+
+# Setup of the Pi to produce outputs
+# Outputs occur on 20 and 21
+pi.setwarnings(False)
+pi.setmode(pi.BCM)
+pi.setup([20,21], pi.OUT)
+
 
 cycle_data = Cycles()
 reset_data = resetScreen(cycle_data)
@@ -12,18 +20,28 @@ window.geometry("400x300")
 
 # Commands that go with Buttons
 def green():
-    print("Green")
-    print(cycle_data.max)
+    global job
+    pi.output(20, True)
+    window.after(cycle_data.time)
+    pi.output(20, False)
+    pi.output(21, True)
+    window.after(cycle_data.time)
+    pi.output(21, False)
+    cycle_data.increment()
+    cycle_count_number.config(text=cycle_data.count)
+    job = window.after(0, green())
 
 
 def red():
-    print("Red")
+    global job
+    job.after_cancel(job)
 
 
 def reset_settings():
     global cycle_data
     reset_data.show(cycle_data)
-    cycle_data=reset_data.cycle_data
+    print("here")
+    cycle_limit_number.config(text=cycle_data.max)
 
 
 
@@ -43,13 +61,13 @@ reset_Button.grid(row=3, column=1)
 cycle_count_text = tk.Label(window, text="Current Cycle Count")
 cycle_count_text.grid(row=1, column=0)
 
-cycle_count_number = tk.Label(window, text="NUMBER")
+cycle_count_number = tk.Label(window, text=cycle_data.count)
 cycle_count_number.grid(row=1, column=1)
 
 cycle_limit_text = tk.Label(window, text="Cycle Limit")
 cycle_limit_text.grid(row=2, column=0)
 
-cycle_limit_number = tk.Label(window, text="NUMBER")
+cycle_limit_number = tk.Label(window, text=cycle_data.max)
 cycle_limit_number.grid(row=2, column=1)
 
 
