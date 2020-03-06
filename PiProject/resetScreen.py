@@ -38,8 +38,8 @@ class resetScreen:
                 else:
                     self.number_entry = self.number_entry[:-1]
     
-            elif x == " ":
-               self.number_display = "0"
+            elif x == "   ":
+               self.number_entry = "0"
 
             else: # Number Entry
                    if self.number_entry == "0":

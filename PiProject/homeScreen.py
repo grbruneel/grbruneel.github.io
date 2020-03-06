@@ -1,31 +1,30 @@
 import tkinter as tk
 from resetScreen import resetScreen
 from Cycles import Cycles
-import RPi.GPIO as pi
+#import piOut as outputs
+import lapOut as outputs
 
-# Setup of the Pi to produce outputs
-# Outputs occur on 20 and 21
-pi.setwarnings(False)
-pi.setmode(pi.BCM)
-pi.setup([20,21], pi.OUT)
-
-
+out = outputs.piControl(20, 21)
 cycle_data = Cycles()
 reset_data = resetScreen(cycle_data)
 window = tk.Tk()
 window.title("Cycles Home Screen")
 window.geometry("400x300")
+job = "0"
 # This hides the cursor, Comment out when not using the touch screen
 # window.config(cursor="none")
 
 # Commands that go with Buttons
 def green():
     global job
-    pi.output(21, False)
-    pi.output(20, True)
+    if cycle_data.count >= cycle_data.max:
+        red()
+        return
+    out.off()
+    out.rightOn()
     window.after(cycle_data.time)
-    pi.output(20, False)
-    pi.output(21, True)
+    out.off()
+    out.leftOn()
     cycle_data.increment()
     update_count()
     job = window.after(cycle_data.time, green)
@@ -36,7 +35,7 @@ def update_count():
 
 def red():
     global job
-    pi.output(21, False)
+    out.off()
     window.after_cancel(job)
 
 
@@ -45,6 +44,7 @@ def reset_settings():
     red()
     reset_data.show(cycle_data)
     cycle_limit_number.config(text=cycle_data.max)
+    cycle_count_number.config(text=cycle_data.count)
 
 
 
