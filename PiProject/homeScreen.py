@@ -21,20 +21,23 @@ window.geometry("400x300")
 # Commands that go with Buttons
 def green():
     global job
+    pi.output(21, False)
     pi.output(20, True)
     window.after(cycle_data.time)
     pi.output(20, False)
     pi.output(21, True)
-    window.after(cycle_data.time)
-    pi.output(21, False)
     cycle_data.increment()
-    cycle_count_number.config(text=cycle_data.count)
-    job = window.after(0, green)
+    update_count()
+    job = window.after(cycle_data.time, green)
 
+
+def update_count():
+    cycle_count_number.config(text=cycle_data.count)
 
 def red():
     global job
-    job.after_cancel(job)
+    pi.output(21, False)
+    window.after_cancel(job)
 
 
 def reset_settings():
