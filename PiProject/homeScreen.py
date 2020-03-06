@@ -1,5 +1,9 @@
 import tkinter as tk
+from resetScreen import resetScreen
+from Cycles import Cycles
 
+cycle_data = Cycles()
+reset_data = resetScreen(cycle_data)
 window = tk.Tk()
 window.title("Cycles Home Screen")
 window.geometry("400x300")
@@ -16,7 +20,11 @@ def red():
 
 
 def reset_settings():
-    print("reset")
+    global cycle_data
+    reset_data.show(cycle_data)
+    cycle_data=reset_data.cycle_data
+    print(cycle_data.max)
+
 
 
 # Buttons on the Home Screen
