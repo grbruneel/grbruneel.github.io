@@ -29,7 +29,7 @@ def green():
     pi.output(21, False)
     cycle_data.increment()
     cycle_count_number.config(text=cycle_data.count)
-    job = window.after(0, green())
+    job = window.after(0, green)
 
 
 def red():
@@ -39,8 +39,8 @@ def red():
 
 def reset_settings():
     global cycle_data
+    red()
     reset_data.show(cycle_data)
-    print("here")
     cycle_limit_number.config(text=cycle_data.max)
 
 
