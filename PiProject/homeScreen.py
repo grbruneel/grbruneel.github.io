@@ -40,6 +40,7 @@ def red():
 
 
 def reset_settings():
+    red()
     global cycle_data
     red()
     reset_data.show(cycle_data)
