@@ -13,6 +13,7 @@ window.geometry("400x300")
 # Commands that go with Buttons
 def green():
     print("Green")
+    print(cycle_data.max)
 
 
 def red():
@@ -23,7 +24,6 @@ def reset_settings():
     global cycle_data
     reset_data.show(cycle_data)
     cycle_data=reset_data.cycle_data
-    print(cycle_data.max)
 
 
 
