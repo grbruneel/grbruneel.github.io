@@ -1,7 +1,7 @@
 import tkinter as tk
 from resetScreen import resetScreen
 from Cycles import Cycles
-#import RPi.GPIO as pi
+import RPi.GPIO as pi
 
 # Setup of the Pi to produce outputs
 # Outputs occur on 20 and 21
