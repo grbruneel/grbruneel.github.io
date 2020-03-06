@@ -55,6 +55,8 @@ class resetScreen:
 
         def done_action():
             window.destroy()
+            window.quit()
+        
 
 # Make set of 12 buttons to act as number pad
 
@@ -84,7 +86,5 @@ class resetScreen:
 
         done_button = tk.Button(window, text="Done", command=done_action)
         done_button.grid(row=0, column=3, columnspan=2)
-
-
 
         window.mainloop()
