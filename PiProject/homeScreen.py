@@ -3,10 +3,12 @@ from resetScreen import resetScreen
 from Cycles import Cycles
 #import piOut as outputs
 import lapOut as outputs
+from timeScreen import timeSet
 
 out = outputs.piControl(20, 21)
 cycle_data = Cycles()
 reset_data = resetScreen(cycle_data)
+time_data = timeSet(cycle_data)
 window = tk.Tk()
 window.title("Cycles Home Screen")
 window.geometry("400x300")
@@ -22,12 +24,12 @@ def green():
         return
     out.off()
     out.rightOn()
-    window.after(cycle_data.time)
+    window.after(cycle_data.extend_time)
     out.off()
     out.leftOn()
     cycle_data.increment()
     update_count()
-    job = window.after(cycle_data.time, green)
+    job = window.after(cycle_data.retract_time, green)
 
 
 def update_count():
@@ -40,13 +42,17 @@ def red():
 
 
 def reset_settings():
-    red()
     global cycle_data
     red()
     reset_data.show(cycle_data)
     cycle_limit_number.config(text=cycle_data.max)
     cycle_count_number.config(text=cycle_data.count)
 
+def time_action():
+    global cycle_data
+    red()
+    time_data.show()
+    # Not currently shown on main Screen
 
 
 # Buttons on the Home Screen
@@ -60,6 +66,9 @@ stop_Button.config(height=5, width=15)
 
 reset_Button = tk.Button(window, text="Cycle Settings", command=reset_settings)
 reset_Button.grid(row=3, column=1)
+
+time_Button = tk.Button(window, text="Time Settings", command=time_action)
+time_Button.grid(row=4, column=1)
 
 # Text on Home Screen
 cycle_count_text = tk.Label(window, text="Current Cycle Count")
