@@ -3,10 +3,10 @@ from resetScreen import resetScreen
 from Cycles import Cycles
 from timeScreen import timeSet
 import platform
-import piOut as outputs
 if platform.system() == "Darwin":
     import lapOut as outputs
-
+else:
+    import piOut as outputs
 
 
 
