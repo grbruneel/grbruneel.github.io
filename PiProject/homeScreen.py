@@ -1,8 +1,8 @@
 import tkinter as tk
 from resetScreen import resetScreen
 from Cycles import Cycles
-import piOut as outputs
-#import lapOut as outputs
+#import piOut as outputs
+import lapOut as outputs
 from timeScreen import timeSet
 
 out = outputs.piControl(20, 21)
@@ -68,33 +68,33 @@ def toggle_fullscreen(Event):
         is_fullscreen = True
     window.attributes("-fullscreen", is_fullscreen)
 
-
+fontsize = 20
 # Buttons on the Home Screen
-start_Button = tk.Button(window, text="START", bg="Green", command=start)
-start_Button.grid(row=0, column=0)
+start_Button = tk.Button(window, text="START", bg="Green", command=start, font=(None, fontsize))
+start_Button.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
 start_Button.config(height=12, width=36)
 
-stop_Button = tk.Button(window, text="STOP", bg="Red", command=stop)
-stop_Button.grid(row=0, column=2)
+stop_Button = tk.Button(window, text="STOP", bg="Red", command=stop, font=(None, fontsize))
+stop_Button.grid(row=0, column=2, padx=10, pady=10, columnspan=2)
 stop_Button.config(height=12, width=36)
 
-reset_Button = tk.Button(window, text="Cycle Settings", command=reset_settings)
-reset_Button.grid(row=3, column=1)
+reset_Button = tk.Button(window, text="Cycle Settings", command=reset_settings, font=(None, fontsize))
+reset_Button.grid(row=3, column=1, columnspan=2, ipadx=10, ipady=5)
 
-time_Button = tk.Button(window, text="Time Settings", command=time_action)
-time_Button.grid(row=4, column=1)
+time_Button = tk.Button(window, text="Time Settings", command=time_action, font=(None, fontsize))
+time_Button.grid(row=4, column=1, columnspan=2, ipadx=10, ipady=5)
 
 # Text on Home Screen
-cycle_count_text = tk.Label(window, text="Current Cycle Count")
+cycle_count_text = tk.Label(window, text="Current Cycle Count", font=(None, fontsize))
 cycle_count_text.grid(row=1, column=0)
 
-cycle_count_number = tk.Label(window, text=cycle_data.count)
+cycle_count_number = tk.Label(window, text=cycle_data.count, font=(None, fontsize))
 cycle_count_number.grid(row=1, column=1)
 
-cycle_limit_text = tk.Label(window, text="Cycle Limit")
+cycle_limit_text = tk.Label(window, text="Cycle Limit", font=(None, fontsize))
 cycle_limit_text.grid(row=2, column=0)
 
-cycle_limit_number = tk.Label(window, text=cycle_data.max)
+cycle_limit_number = tk.Label(window, text=cycle_data.max, font=(None, fontsize))
 cycle_limit_number.grid(row=2, column=1)
 
 # Full Screen
