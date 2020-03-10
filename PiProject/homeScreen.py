@@ -1,8 +1,8 @@
 import tkinter as tk
 from resetScreen import resetScreen
 from Cycles import Cycles
-#import piOut as outputs
-import lapOut as outputs
+import piOut as outputs
+#import lapOut as outputs
 from timeScreen import timeSet
 
 out = outputs.piControl(20, 21)
@@ -58,7 +58,6 @@ def time_action():
 def close_fullscreen(Event):
     global is_fullscreen
     is_fullscreen = False
-    print(is_fullscreen)
     window.attributes("-fullscreen", is_fullscreen)
 
 def toggle_fullscreen(Event):
@@ -73,11 +72,11 @@ def toggle_fullscreen(Event):
 # Buttons on the Home Screen
 start_Button = tk.Button(window, text="START", bg="Green", command=start)
 start_Button.grid(row=0, column=0)
-start_Button.config(height=5, width=15)
+start_Button.config(height=12, width=36)
 
 stop_Button = tk.Button(window, text="STOP", bg="Red", command=stop)
 stop_Button.grid(row=0, column=2)
-stop_Button.config(height=5, width=15)
+stop_Button.config(height=12, width=36)
 
 reset_Button = tk.Button(window, text="Cycle Settings", command=reset_settings)
 reset_Button.grid(row=3, column=1)
