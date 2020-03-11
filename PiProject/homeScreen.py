@@ -60,7 +60,7 @@ def time_action():
     time_data.show()
     # Not currently shown on main Screen
 
-def close_fullscreen(Event):
+def close_fullscreen(Event=None):
     global is_fullscreen
     is_fullscreen = False
     window.attributes("-fullscreen", is_fullscreen)
@@ -89,6 +89,8 @@ reset_Button.grid(row=3, column=1, columnspan=2, ipadx=10, ipady=5)
 time_Button = tk.Button(window, text="Time Settings", command=time_action, font=(None, fontsize))
 time_Button.grid(row=4, column=1, columnspan=2, ipadx=10, ipady=5)
 
+end_fullscreen_button = tk.Button(window, text="ESC", command=close_fullscreen, font=(None, fontsize))
+end_fullscreen_button.grid(row=5, column=5)
 # Text on Home Screen
 cycle_count_text = tk.Label(window, text="Current Cycle Count", font=(None, fontsize))
 cycle_count_text.grid(row=1, column=0)
