@@ -15,6 +15,8 @@ class home:
         self.cycle_data = Cycles()
         self.reset_data = resetScreen(self.cycle_data)
         self.time_data = timeSet(self.cycle_data)
+        self.cycle_side = True
+        self.previous_cycle_side = True
         self.window = tk.Tk()
         self.window.title("Cycles Home Screen")
         self.window.geometry("400x300")
@@ -78,6 +80,22 @@ class home:
         self.job = self.window.after(self.cycle_data.retract_time, self.__start)
         
 
+    def __cycleStart(self):
+        if self.cycle_data.count >= self.cycle_data.max:
+            self.__stop()
+            return
+        if self.cycle_side:
+            if !self.previous_cycle_side:
+                self.cycle_data.increment()
+                self.__update_count()
+                self.out.off()
+                self.out.rightOn()
+        else:
+            if self.previous_cycle_side:
+                self.out.off()
+                self.out.rightOn()
+        
+
 
     def __update_count(self):
         self.cycle_count_number.config(text=self.cycle_data.count)
@@ -113,6 +131,9 @@ class home:
         self.__stop()
         self.load.show()
 
+    def __cycle_inputs(self):
+        return 0
+    
 
 
 test = home()
