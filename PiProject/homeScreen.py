@@ -1,3 +1,5 @@
+# Outputs are on pin 20 and 21
+# Inputs are on pins 5 and 6
 import tkinter as tk
 from resetScreen import resetScreen
 from Cycles import Cycles
@@ -16,7 +18,7 @@ class home:
         self.reset_data = resetScreen(self.cycle_data)
         self.time_data = timeSet(self.cycle_data)
         self.cycle_side = True
-        self.previous_cycle_side = True
+        self.previous_cycle_side = False
         self.window = tk.Tk()
         self.window.title("Cycles Home Screen")
         self.window.geometry("400x300")
@@ -31,7 +33,7 @@ class home:
         self.cycle_count_number = tk.Label(self.window, text=self.cycle_data.count, font=(None, self.fontsize))
         self.cycle_count_number.grid(row=1, column=1, pady=3)
                 # Buttons on the Home Screen
-        start_Button = tk.Button(self.window, text="START", bg="Green", command=self.__start, font=(None, self.fontsize))
+        start_Button = tk.Button(self.window, text="START", bg="Green", command=self.__cycleStart, font=(None, self.fontsize))
         start_Button.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
         start_Button.config(height=7, width=21)
 
@@ -62,7 +64,8 @@ class home:
         self.window.bind("<Escape>", self.__close_fullscreen)
         self.window.bind("<F11>", self.__toggle_fullscreen)
         self.window.attributes("-fullscreen", self.is_fullscreen)
-
+        
+        self.__cycle_inputs()
         self.window.mainloop()
 
 # Commands that go with Buttons
@@ -85,17 +88,19 @@ class home:
             self.__stop()
             return
         if self.cycle_side:
-            if !self.previous_cycle_side:
+            if not self.previous_cycle_side:
+                self.previous_cycle_side = self.cycle_side
                 self.cycle_data.increment()
                 self.__update_count()
                 self.out.off()
                 self.out.rightOn()
-        else:
+        elif not self.cycle_side:
             if self.previous_cycle_side:
                 self.out.off()
-                self.out.rightOn()
+                self.out.leftOn()
+                self.previous_cycle_side = self.cycle_side
         
-
+        self.job = self.window.after(1, self.__cycleStart)
 
     def __update_count(self):
         self.cycle_count_number.config(text=self.cycle_data.count)
@@ -132,7 +137,12 @@ class home:
         self.load.show()
 
     def __cycle_inputs(self):
-        return 0
+        if self.out.rightIn():
+            self.cycle_side = True
+        if self.out.leftIn():
+            self.cycle_side = False
+        self.window.after(1, self.__cycle_inputs)
+        
     
 
 
