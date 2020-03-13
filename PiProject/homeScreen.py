@@ -33,7 +33,7 @@ class home:
         self.cycle_count_number = tk.Label(self.window, text=self.cycle_data.count, font=(None, self.fontsize))
         self.cycle_count_number.grid(row=1, column=1, pady=3)
                 # Buttons on the Home Screen
-        start_Button = tk.Button(self.window, text="START", bg="Green", command=self.__cycleStart, font=(None, self.fontsize))
+        start_Button = tk.Button(self.window, text="START", bg="Green", command=self.__start, font=(None, self.fontsize))
         start_Button.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
         start_Button.config(height=7, width=21)
 
