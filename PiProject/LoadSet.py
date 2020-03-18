@@ -1,6 +1,6 @@
 import tkinter as tk
 import platform
-if platform.system() == "Darwin":
+if platform.system() == "Darwin" or platform.system() == "Windows":
     import lapOut as outputs
 else:
     import piOut as outputs

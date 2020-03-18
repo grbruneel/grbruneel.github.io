@@ -5,7 +5,7 @@ from resetScreen import resetScreen
 from Cycles import Cycles
 from timeScreen import timeSet
 import platform
-if platform.system() == "Darwin":
+if platform.system() == "Darwin" or platform.system() == "Windows":
     import lapOut as outputs
 else:
     import piOut as outputs
@@ -26,7 +26,7 @@ class home:
         self.load = LoadSet.SettingLoad()
         self.fontsize = 18
         self.is_fullscreen = True
-        if platform.system() != "Darwin":
+        if platform.system() != "Darwin" and platform.system() != "Windows":
             self.window.config(cursor="none") #Hides the mouse when not on a mac
         self.cycle_limit_number = tk.Label(self.window, text=self.cycle_data.max, font=(None, self.fontsize))
         self.cycle_limit_number.grid(row=2, column=1)
@@ -48,10 +48,10 @@ class home:
         time_Button.grid(row=4, column=1, columnspan=2, ipadx=10, ipady=5)
 
         set_load_button = tk.Button(self.window, text="To Set Load", command=self.__load, font=(None, self.fontsize))
-        set_load_button.grid(row=2, column=4)
+        set_load_button.grid(row=2, column=3)
 
         end_fullscreen_button = tk.Button(self.window, text="ESC", command=self.__close_fullscreen, font=(None, self.fontsize))
-        end_fullscreen_button.grid(row=5, column=5)
+        end_fullscreen_button.grid(row=5, column=4)
 
         # Text on Home Screen
         cycle_count_text = tk.Label(self.window, text="Current Cycle Count", font=(None, self.fontsize))
