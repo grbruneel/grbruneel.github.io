@@ -30,12 +30,15 @@ class home:
         self.cycle_side = True
         self.previous_cycle_side = False
 
-        # Jobs that need to be able to be cancelled in other methods
-        self.job = "0"
-
         # Initializing the Main Window
         self.window = tk.Tk()
         self.window.title("Data Home Screen")
+
+        
+        # Jobs that need to be able to be cancelled in other methods
+        self.job = self.window.after(0, self.__nothing)
+        self.sensing = False
+        self.window.after_cancel(self.job)
 
         # Miscellanies things to help the screen look better
         self.fontsize = 18
@@ -58,9 +61,9 @@ class home:
         self.cycle_count_number.grid(row=1, column=1, pady=3)
 
         # Buttons on the Home Screen
-        start_Button = tk.Button(self.window, text="START", bg="Green", command=self.__start, font=(None, self.fontsize))
-        start_Button.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
-        start_Button.config(height=7, width=21)
+        self.start_Button = tk.Button(self.window, text="START", bg="Green", command=self.__start, font=(None, self.fontsize))
+        self.start_Button.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
+        self.start_Button.config(height=7, width=21)
 
         stop_Button = tk.Button(self.window, text="STOP", bg="Red", command=self.__stop, font=(None, self.fontsize))
         stop_Button.grid(row=0, column=2, padx=10, pady=10, columnspan=2)
@@ -138,8 +141,6 @@ class home:
     def __reset_settings(self):
         # Opens the window to change the cycle count
         # The display is changed once the other window is closed
-        # BUG When closed with "x" the numbers do not update on the screen but they do in memory.
-        #       count resets when start but limit does not change.
         self.__stop()
         self.reset_data.show(self.cycle_data)
         self.cycle_limit_number.config(text=self.cycle_data.max)
@@ -175,13 +176,23 @@ class home:
             self.cycle_side = True
         if self.out.leftIn():
             self.cycle_side = False
-        self.window.after(1, self.__cycle_inputs)
+        if self.sensing:
+            self.window.after(1, self.__cycle_inputs)
     
     def __other_settings(self):
         # Opens the other settings window
         self.__stop()
         self.other_settings.show(self.cycle_data)
-        print(self.cycle_data.mode)
+        if self.cycle_data.mode == "Thump":
+            self.start_Button.config(command=self.__start)
+            self.sensing = False
+        elif self.cycle_data.mode == "Cycle":
+            self.start_Button.config(command=self.__cycleStart)
+            self.sensing = True
+            self.__cycle_inputs()
+
+    def __nothing(self):
+        pass
 
     
     
