@@ -7,8 +7,8 @@ else:
 
 class SettingLoad:
 
-    def __init__(self):
-        self.out = outputs.piControl(20, 21)
+    def __init__(self, output):
+        self.out = output
         self.right = True
         self.window = "0" #Becomes window object first time show() is done 
         

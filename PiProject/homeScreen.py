@@ -23,7 +23,7 @@ class home:
         self.window.title("Cycles Home Screen")
         self.window.geometry("400x300")
         self.job = "0"
-        self.load = LoadSet.SettingLoad()
+        self.load = LoadSet.SettingLoad(self.out)
         self.fontsize = 18
         self.is_fullscreen = True
         if platform.system() != "Darwin" and platform.system() != "Windows":
@@ -46,6 +46,9 @@ class home:
 
         time_Button = tk.Button(self.window, text="Time Settings", command=self.__time_action, font=(None, self.fontsize))
         time_Button.grid(row=4, column=1, columnspan=2, ipadx=10, ipady=5)
+
+        other_settings_button = tk.Button(self.window, text="Other Settings", command=self.__other_settings, font=(None, self.fontsize))
+        other_settings_button.grid(row=3, column=0, ipadx=10, ipady=5)
 
         set_load_button = tk.Button(self.window, text="To Set Load", command=self.__load, font=(None, self.fontsize))
         set_load_button.grid(row=2, column=3)
@@ -142,7 +145,10 @@ class home:
         if self.out.leftIn():
             self.cycle_side = False
         self.window.after(1, self.__cycle_inputs)
-        
+    
+    def __other_settings(self):
+        return 3
+    
     
 
 
