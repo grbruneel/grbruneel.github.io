@@ -1,9 +1,9 @@
 import tkinter as tk
-from Cycles import Cycles
+from Cycles import Data
 
 class resetScreen:
 
-    def __init__(self, cycle=Cycles()):
+    def __init__(self, cycle=Data()):
         self.cycle_data = cycle
         self.number_entry = "0"
         self.number_display = 0
@@ -17,7 +17,7 @@ class resetScreen:
 
 
 #number_entry = "0"
-#cycle_data = Cycles()
+#cycle_data = Data()
 
 
 
@@ -94,4 +94,5 @@ class resetScreen:
         reset_count = tk.Button(window, text="Set Count 0", command=count_to_zero)
         reset_count.grid(row=3, column=4)
 
+        window.protocol("WM_DELETE_WINDOW", done_action)
         window.mainloop()
