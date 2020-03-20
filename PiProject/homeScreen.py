@@ -11,6 +11,7 @@ if platform.system() == "Darwin" or platform.system() == "Windows":
 else:
     import piOut as outputs
 import LoadSet
+import time
 
 class home:
     def __init__ (self):
@@ -37,8 +38,9 @@ class home:
         
         # Jobs that need to be able to be cancelled in other methods
         self.job = self.window.after(0, self.__nothing)
+        self.stagger = False
+        self.stagger_job = self.window.after(0, self.__nothing)
         self.sensing = False
-        self.window.after_cancel(self.job)
 
         # Miscellanies things to help the screen look better
         self.fontsize = 18
@@ -87,7 +89,8 @@ class home:
         # Full Screen Settings
         self.window.bind("<Escape>", self.__close_fullscreen)
         self.window.bind("<F11>", self.__toggle_fullscreen)
-        self.window.attributes("-fullscreen", self.is_fullscreen)
+        if not platform.system() == "Windows":
+            self.window.attributes("-fullscreen", self.is_fullscreen)
         
         # Run the window loop
         self.window.mainloop()
@@ -98,6 +101,9 @@ class home:
         if self.cycle_data.count >= self.cycle_data.max:
             self.__stop()
             return
+        if self.stagger:
+           self.stagger_job = self.window.after(self.cycle_data.stagger_on, self.__pause)
+           self.stagger = False
         self.out.off()
         self.out.rightOn()
         self.window.after(self.cycle_data.extend_time)
@@ -136,7 +142,17 @@ class home:
         # Stops all actions
         self.out.off()
         self.window.after_cancel(self.job)
+        self.cycle_side = True
+        self.previous_cycle_side = False
+        self.window.after_cancel(self.stagger_job)
+        self.stagger = (self.cycle_data.runtime == "Stagger")
 
+    def __pause(self):
+        self.out.off()
+        self.window.after_cancel(self.job)
+        print("Pause")
+        self.stagger = True
+        self.window.after(self.cycle_data.stagger_off, self.__start)
 
     def __reset_settings(self):
         # Opens the window to change the cycle count
@@ -180,9 +196,9 @@ class home:
             self.window.after(1, self.__cycle_inputs)
     
     def __other_settings(self):
-        # Opens the other settings window
+        # Opens the Other settings window
         self.__stop()
-        self.other_settings.show(self.cycle_data)
+        self.other_settings.show()
         if self.cycle_data.mode == "Thump":
             self.start_Button.config(command=self.__start)
             self.sensing = False
@@ -190,6 +206,11 @@ class home:
             self.start_Button.config(command=self.__cycleStart)
             self.sensing = True
             self.__cycle_inputs()
+        if self.cycle_data.runtime == "Stagger":
+            self.stagger = True
+        elif self.cycle_data.runtime == "Continuous":
+            self.stagger = False
+        
 
     def __nothing(self):
         pass
