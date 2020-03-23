@@ -23,8 +23,8 @@ class piControl:
         pi.output([self.right, self.left], False)
         
     def leftIn(self):
-        return pi.input(5)
+        return (pi.input(5) == 1)
     
     def rightIn(self):
-        return pi.input(6)
+        return (pi.input(6) == 1)
 
