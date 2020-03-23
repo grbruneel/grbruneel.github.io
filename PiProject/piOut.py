@@ -11,7 +11,7 @@ class piControl:
         pi.setwarnings(False)
         pi.setmode(pi.BCM)
         pi.setup([self.left, self.right], pi.OUT)
-        pi.setup([5, 6], pi.IN)
+        pi.setup([23, 24], pi.IN)
 
     def leftOn(self):
         pi.output(self.left, True)

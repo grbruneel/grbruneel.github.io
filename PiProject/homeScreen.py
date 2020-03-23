@@ -16,7 +16,7 @@ import time
 class home:
     def __init__ (self):
         # Control the outputs and inputs initialized
-        self.out = outputs.piControl(20, 21)
+        self.out = outputs.piControl(14, 15)
 
         # The data and settings information is initialized
         self.cycle_data = Data()
