@@ -1,8 +1,10 @@
 class piControl:
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, xi, yi):
         self.x = x
         self.y = y
+        self.xi = xi
+        self.yi = yi
 
     def rightOn(self):
         print(self.x)

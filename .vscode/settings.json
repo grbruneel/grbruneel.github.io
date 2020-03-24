@@ -3,7 +3,9 @@
         "GPIO",
         "ipadx",
         "ipady",
+        "lefti",
         "padx",
-        "pady"
+        "pady",
+        "righti"
     ]
 }
