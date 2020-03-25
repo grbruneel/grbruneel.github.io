@@ -20,6 +20,7 @@ class home:
 
         # The data and settings information is initialized
         self.cycle_data = Data()
+        self.time_left = 0
 
         # The subscreens are initialized so "show" can be called on them later
         self.reset_data = resetScreen(self.cycle_data)
@@ -46,7 +47,7 @@ class home:
         self.fontsize = 18
         self.is_fullscreen = True
         if platform.system() != "Darwin" and platform.system() != "Windows":
-            self.window.config(cursor="none") #Hides the mouse when not on a mac
+            self.window.config(cursor="none") #Hides the mouse when on the Pi
         
         # Labels on main screen window
         cycle_count_text = tk.Label(self.window, text="Current Cycle Count", font=(None, self.fontsize))
@@ -55,12 +56,18 @@ class home:
         cycle_limit_text = tk.Label(self.window, text="Cycle Limit", font=(None, self.fontsize))
         cycle_limit_text.grid(row=2, column=0, pady=3)
 
+        time_remaining_text = tk.Label(self.window, text="Time Remaining", font=(None, self.fontsize))
+        time_remaining_text.grid(row=1, column=2)
+
         # Labels that need to be accessed by methods to change the counts
         self.cycle_limit_number = tk.Label(self.window, text=self.cycle_data.max, font=(None, self.fontsize))
         self.cycle_limit_number.grid(row=2, column=1)
 
         self.cycle_count_number = tk.Label(self.window, text=self.cycle_data.count, font=(None, self.fontsize))
         self.cycle_count_number.grid(row=1, column=1, pady=3)
+
+        self.time_remaining_number = tk.Label(self.window, text="N/A", font=(None, self.fontsize))
+        self.time_remaining_number.grid(row=1, column=3)
 
         # Buttons on the Home Screen
         self.start_Button = tk.Button(self.window, text="START", bg="Green", command=self.__start, font=(None, self.fontsize))
@@ -101,6 +108,7 @@ class home:
         if self.cycle_data.count >= self.cycle_data.max:
             self.__stop()
             return
+        self.__change_time_left()
         if self.stagger:
            self.stagger_job = self.window.after(self.cycle_data.stagger_on, self.__pause)
            self.stagger = False
@@ -211,6 +219,30 @@ class home:
         elif self.cycle_data.runtime == "Continuous":
             self.stagger = False
         
+    def __calculate_time(self):
+        # Returns the number of days left according to the extend and retract time.
+        remaining = (self.cycle_data.retract_time + self.cycle_data.extend_time) * (self.cycle_data.max - self.cycle_data.count)
+        remaining = remaining / 1000
+        if remaining // 60 < 1:
+            self.time_left = str(remaining) + " sec"
+            return
+        remaining = remaining // 60
+        if remaining // 60 < 2:
+            self.time_left = str(remaining) + " min"
+            return
+        remaining = remaining // 60
+        if remaining // 24 < 2:
+            self.time_left = str(remaining) + " hrs"
+            return
+        remaining = remaining // 24
+        self.time_left = str(remaining) + " days"
+
+         
+        
+        
+    def __change_time_left(self):
+        self.__calculate_time()
+        self.time_remaining_number.config(text=self.time_left)
 
     def __nothing(self):
         pass
