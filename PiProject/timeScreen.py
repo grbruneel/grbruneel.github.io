@@ -1,9 +1,9 @@
 import tkinter as tk
-from Cycles import Cycles
+from Cycles import Data
 
 class timeSet:
 
-    def __init__(self, data = Cycles()):
+    def __init__(self, data = Data()):
         self.data = data
         self.number_entry = "0" # This is the number that is shown above the number pad
         self.number_display = "0" # This becomes the Button object in show(self)
@@ -91,5 +91,6 @@ class timeSet:
         done_button = tk.Button(self.window, text="Done", command=self.__done)
         done_button.grid(row=0, column=3, columnspan=2)
 
+        self.window.protocol("WM_DELETE_WINDOW", self.__done)
         self.window.mainloop()
 
