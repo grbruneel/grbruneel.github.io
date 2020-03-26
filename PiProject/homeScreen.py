@@ -11,7 +11,7 @@ if platform.system() == "Darwin" or platform.system() == "Windows":
 else:
     import piOut as outputs
 import LoadSet
-import time
+from datetime import datetime, timedelta
 
 class home:
     def __init__ (self):
@@ -20,7 +20,7 @@ class home:
 
         # The data and settings information is initialized
         self.cycle_data = Data()
-        self.time_left = 0
+        self.finish_date = 0
 
         # The subscreens are initialized so "show" can be called on them later
         self.reset_data = resetScreen(self.cycle_data)
@@ -56,7 +56,7 @@ class home:
         cycle_limit_text = tk.Label(self.window, text="Cycle Limit", font=(None, self.fontsize))
         cycle_limit_text.grid(row=2, column=0, pady=3)
 
-        time_remaining_text = tk.Label(self.window, text="Time Remaining", font=(None, self.fontsize))
+        time_remaining_text = tk.Label(self.window, text="Estimated Finish", font=(None, self.fontsize))
         time_remaining_text.grid(row=1, column=2)
 
         # Labels that need to be accessed by methods to change the counts
@@ -108,7 +108,7 @@ class home:
         if self.cycle_data.count >= self.cycle_data.max:
             self.__stop()
             return
-        self.__change_time_left()
+        self.__change_finish_date()
         if self.stagger:
            self.stagger_job = self.window.after(self.cycle_data.stagger_on, self.__pause)
            self.stagger = False
@@ -154,6 +154,8 @@ class home:
         self.previous_cycle_side = False
         self.window.after_cancel(self.stagger_job)
         self.stagger = (self.cycle_data.runtime == "Stagger")
+        self.finish_date = 0
+        self.time_remaining_number.config(text="N/A")
 
     def __pause(self):
         self.out.off()
@@ -223,26 +225,17 @@ class home:
         # Returns the number of days left according to the extend and retract time.
         remaining = (self.cycle_data.retract_time + self.cycle_data.extend_time) * (self.cycle_data.max - self.cycle_data.count)
         remaining = remaining / 1000
-        if remaining // 60 < 1:
-            self.time_left = str(remaining) + " sec"
-            return
-        remaining = remaining // 60
-        if remaining // 60 < 2:
-            self.time_left = str(remaining) + " min"
-            return
-        remaining = remaining // 60
-        if remaining // 24 < 2:
-            self.time_left = str(remaining) + " hrs"
-            return
-        remaining = remaining // 24
-        self.time_left = str(remaining) + " days"
+        now = datetime.today()
+        finish = now + timedelta(seconds=remaining)
+        self.finish_date = finish.strftime("%d/%m/%Y %H:%M")
+
 
          
         
         
-    def __change_time_left(self):
+    def __change_finish_date(self):
         self.__calculate_time()
-        self.time_remaining_number.config(text=self.time_left)
+        self.time_remaining_number.config(text=self.finish_date)
 
     def __nothing(self):
         pass
