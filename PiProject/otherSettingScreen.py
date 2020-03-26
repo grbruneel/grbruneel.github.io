@@ -51,10 +51,10 @@ class Other:
         off_time_text = tk.Label(self.window, text="Time Off (min)")
         off_time_text.grid(row=3, column=4, padx=10, pady=5)
 
-        self.on_time_number = tk.Label(self.window, text=self.data.stagger_on)
+        self.on_time_number = tk.Label(self.window, text=self.data.stagger_on / 60000)
         self.on_time_number.grid(row=2, column=5, padx=10, pady=5)
 
-        self.off_time_number = tk.Label(self.window, text=self.data.stagger_off)
+        self.off_time_number = tk.Label(self.window, text=self.data.stagger_off / 60000)
         self.off_time_number.grid(row=3, column=5, padx=10, pady=5)
 
         # Toggle buttons to the right of the Labels
@@ -63,6 +63,9 @@ class Other:
 
         runtime_button = tk.Button(self.window, text="Continuous/Stagger Runtime", command=self.__toggle_continuous_Stagger)
         runtime_button.grid(row=1, column=5, padx=10, pady=5)
+
+        revert_settings_button = tk.Button(self.window, text="Revert to Default Settings", command=self.__revert_settings)
+        revert_settings_button.grid(row=4 ,column=6, ipadx=10, ipady=5)
 
         # Set time Buttons
         on_time_button = tk.Button(self.window, text="Set Time On", command=self.__set_time_on)
@@ -125,3 +128,10 @@ class Other:
     def __set_time_off(self):
         self.data.stagger_off = int(float(self.number_entry) * 60000)
         self.off_time_number.config(text=self.data.stagger_off / 60000)
+    
+    def __revert_settings(self):
+        self.data.revert_default()
+        self.off_time_number.config(text=self.data.stagger_off / 60000)
+        self.on_time_number.config(text=self.data.stagger_on / 60000)
+        self.cycle_thump_label.config(text=self.data.mode)
+        self.runtime_label.config(text=self.data.runtime)

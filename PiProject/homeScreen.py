@@ -99,16 +99,22 @@ class home:
         if not platform.system() == "Windows":
             self.window.attributes("-fullscreen", self.is_fullscreen)
         
+        if self.cycle_data.mode == "Cycle":
+            self.start_Button.config(command=self.__cycleStart)
+            self.sensing = True
+            self.__cycle_inputs()
         # Run the window loop
         self.window.mainloop()
 
 # Commands that go with Buttons
     def __start(self):
         # Start button for the thump test mode
+        if self.cycle_data.count % 1000 == 0:
+            self.cycle_data.save()
+            self.__change_finish_date()
         if self.cycle_data.count >= self.cycle_data.max:
             self.__stop()
             return
-        self.__change_finish_date()
         if self.stagger:
            self.stagger_job = self.window.after(self.cycle_data.stagger_on, self.__pause)
            self.stagger = False
@@ -156,6 +162,7 @@ class home:
         self.stagger = (self.cycle_data.runtime == "Stagger")
         self.finish_date = 0
         self.time_remaining_number.config(text="N/A")
+        self.cycle_data.save()
 
     def __pause(self):
         self.out.off()
@@ -163,6 +170,7 @@ class home:
         print("Pause")
         self.stagger = True
         self.window.after(self.cycle_data.stagger_off, self.__start)
+        self.cycle_data.save()
 
     def __reset_settings(self):
         # Opens the window to change the cycle count
@@ -171,11 +179,13 @@ class home:
         self.reset_data.show(self.cycle_data)
         self.cycle_limit_number.config(text=self.cycle_data.max)
         self.cycle_count_number.config(text=self.cycle_data.count)
+        self.cycle_data.save()
 
     def __time_action(self):
         # Opens the window to change the time settings
         self.__stop()
         self.time_data.show()
+        self.cycle_data.save()
         # Not currently shown on main Screen
 
     def __close_fullscreen(self, Event=None):
@@ -220,6 +230,9 @@ class home:
             self.stagger = True
         elif self.cycle_data.runtime == "Continuous":
             self.stagger = False
+        self.cycle_limit_number.config(text=self.cycle_data.max)
+        self.cycle_count_number.config(text=self.cycle_data.count)
+        self.cycle_data.save()
         
     def __calculate_time(self):
         # Returns the number of days left according to the extend and retract time.
@@ -228,10 +241,6 @@ class home:
         now = datetime.today()
         finish = now + timedelta(seconds=remaining)
         self.finish_date = finish.strftime("%d/%m/%Y %H:%M")
-
-
-         
-        
         
     def __change_finish_date(self):
         self.__calculate_time()
