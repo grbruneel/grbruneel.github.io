@@ -4,7 +4,9 @@ class Data:
         try:
             file = open("settings.txt", "r")
         except:
-            file = open("defaultsettings.txt", "r")
+            self.revert_default()
+            self.save()
+            file = open("settings.txt", "r")
         lines = file.readlines()
         self.max = int(lines[0])
         self.count = int(lines[1])
@@ -31,13 +33,11 @@ class Data:
         file.close()
 
     def revert_default(self):
-        file = open("defaultsettings.txt", "r")
-        lines = file.readlines()
-        self.max = int(lines[0])
-        self.count = int(lines[1])
-        self.retract_time = int(lines[2])
-        self.extend_time = int(lines[3])
-        self.mode = lines[4][:-1]
-        self.runtime = lines[5][:-1]
-        self.stagger_on = int(lines[6])
-        self.stagger_off = int(lines[7])
+        self.max = 1000000
+        self.count = 0
+        self.retract_time = 500
+        self.extend_time = 500
+        self.mode = "Thump"
+        self.runtime = "Continuous"
+        self.stagger_on = 900000
+        self.stagger_off = 2700000
