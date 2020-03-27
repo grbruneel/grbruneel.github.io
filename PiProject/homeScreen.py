@@ -8,8 +8,10 @@ from otherSettingScreen import Other
 import platform
 if platform.system() == "Darwin" or platform.system() == "Windows":
     import lapOut as outputs
+    import fakeSendMail as mail
 else:
     import piOut as outputs
+    import sendMail as mail
 import LoadSet
 from datetime import datetime, timedelta
 
@@ -114,6 +116,7 @@ class home:
             self.__change_finish_date()
         if self.cycle_data.count >= self.cycle_data.max:
             self.__stop()
+            mail.send()
             return
         if self.stagger:
            self.stagger_job = self.window.after(self.cycle_data.stagger_on, self.__pause)
