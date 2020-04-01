@@ -243,7 +243,7 @@ class home:
         remaining = remaining / 1000
         now = datetime.today()
         finish = now + timedelta(seconds=remaining)
-        self.finish_date = finish.strftime("%d/%m/%Y %H:%M")
+        self.finish_date = finish.strftime("%m/%d/%Y %H:%M")
         
     def __change_finish_date(self):
         self.__calculate_time()
