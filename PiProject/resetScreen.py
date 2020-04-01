@@ -85,7 +85,7 @@ class resetScreen:
         cycle_count_number.grid(row=2, column=4)
 
 # Buttons to reset the Cycle Count and Cycle Limit
-        reset_limit = tk.Button(window, text="Reset Limit", command=limit)
+        reset_limit = tk.Button(window, text="Set Limit", command=limit)
         reset_limit.grid(row=3, column=3)
 
         done_button = tk.Button(window, text="Done", command=done_action)
