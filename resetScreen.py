@@ -1,3 +1,4 @@
+# This screen is to reset the cycle count and max cycle limit
 import tkinter as tk
 from Cycles import Data
 

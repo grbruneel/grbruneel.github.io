@@ -1,5 +1,5 @@
-# Outputs are on pin 20 and 21
-# Inputs are on pins 5 and 6
+# This runs the home screen 
+
 import tkinter as tk
 from resetScreen import resetScreen
 from Cycles import Data

@@ -1,3 +1,5 @@
+# This screen is to set the extend and retract time of the thump test
+
 import tkinter as tk
 from Cycles import Data
 
@@ -12,18 +14,22 @@ class timeSet:
         self.window = "0" #Becomes the main Window object
 
     def __retract(self):
+        # The time one side of the cylinder is activated
         self.data.retract_time = int(float(self.number_entry) * 1000)
         self.retract_time_number.config(text=self.data.retract_time / 1000)
 
     def __extend(self):
-        self.data.extend_time = int(float(self.number_entry) * 1000)
+        # The time the other side of the cylinder is activated
+        self.data.extend_time = int(float(self.number_entry) * 1000) # The 1000 is to convert from seconds to miliseconds
         self.extend_time_number.config(text=self.data.extend_time / 1000)
 
     def __done(self):
+        # Done button that closes the window
         self.window.destroy()
         self.window.quit()
 
     def __number(self, x):
+        # The command of each button when it is pressed
         if x == "DEL":
             if self.number_entry == "0":
                 self.number_entry = "0"
@@ -46,6 +52,7 @@ class timeSet:
         self.number_display.config(text=self.number_entry)
 
     def show(self):
+        # The command that the home screen calls to show this time screen
 
         self.window = tk.Tk()
         self.window.title("Time Settings")

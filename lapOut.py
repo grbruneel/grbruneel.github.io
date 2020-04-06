@@ -1,3 +1,5 @@
+# This is how the program recieves inputs and prints outputs when not on the Raspberry Pi
+
 class piControl:
 
     def __init__(self, x, y, xi, yi):

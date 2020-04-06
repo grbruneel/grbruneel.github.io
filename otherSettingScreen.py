@@ -1,3 +1,9 @@
+ # The window that gives access to the settings of:
+ # Stagger/Continuous runtime
+ # Thump without waiting for an input or cycle switching when an input is detected
+ # number pad to set the time the thumper runs and then pauses
+ # and a button to revert back to the defauly settings
+
 import tkinter as tk
 from Cycles import Data
 
@@ -82,6 +88,8 @@ class Other:
         self.window.mainloop()
 
     def __number(self, x):
+        # Command for each number on the pad
+
         if x == "DEL":
             if self.number_entry == "0":
                 self.number_entry = "0"
@@ -103,7 +111,9 @@ class Other:
                 self.number_entry = self.number_entry + x
         self.number_display.config(text=self.number_entry)
     
+
     def __toggle_continuous_Stagger(self):
+        # Changes the setting where the thump is continuous or stops after so long.
         if self.data.runtime == "Stagger":
             self.data.runtime = "Continuous"
         elif self.data.runtime == "Continuous":
@@ -111,6 +121,7 @@ class Other:
         self.runtime_label.config(text=self.data.runtime)
 
     def __toggle_thump_cycle(self):
+        # Changes the setting if the pi thumps without waiting for inputs or cycles and changes when the magnets are activated.
         if self.data.mode == "Thump":
             self.data.mode = "Cycle"
         elif self.data.mode == "Cycle":
@@ -118,18 +129,23 @@ class Other:
         self.cycle_thump_label.config(text=self.data.mode)
 
     def __quit_window(self):
+        # closes the window
         self.window.destroy()
         self.window.quit()
 
     def __set_time_on(self):
+        # Applies the number displayed to the time on setting
         self.data.stagger_on = int(float(self.number_entry) * 60000)
         self.on_time_number.config(text=self.data.stagger_on / 60000)
+        # The 60000 is to convert minutes into miliseconds
 
     def __set_time_off(self):
+        # Applies the number displayed to the time off setting
         self.data.stagger_off = int(float(self.number_entry) * 60000)
         self.off_time_number.config(text=self.data.stagger_off / 60000)
     
     def __revert_settings(self):
+        # Sets all the settings back to the set default settings
         self.data.revert_default()
         self.off_time_number.config(text=self.data.stagger_off / 60000)
         self.on_time_number.config(text=self.data.stagger_on / 60000)

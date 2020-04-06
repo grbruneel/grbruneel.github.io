@@ -1,3 +1,8 @@
+# Data class is where all the settings are stored. 
+# Increment increases the count of cycles by one.
+# Save writes a settings.txt file with all the current values
+# Revert_default changes all the settings in the class back to a default state
+
 class Data:
 
     def __init__(self):
