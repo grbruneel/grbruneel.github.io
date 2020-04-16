@@ -24,6 +24,7 @@ class piControl:
         pi.output(self.right, True)
 
     def off(self):
+        # Turns both outputs off
         pi.output([self.right, self.left], False)
         
     def leftIn(self):

@@ -1,4 +1,5 @@
 # This is how the program recieves inputs and prints outputs when not on the Raspberry Pi
+# Instead of producing a voltage output and taking inputs all the outputs and inputs occur in the terminal
 
 class piControl:
 

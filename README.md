@@ -15,15 +15,17 @@ and then add the following line to the bottom of the file
     lcd_rotate=2
 
 2. Download the Code file
-Still pending on the best way to do this...
+Still pending on the best way to do this... github?
 
 3. Autostart the code on startup
-Open the terminal and edit the ...........
+Open the terminal and edit the ........... autostart stuff
+
+4. Install ssmtp and other libraries?
 
 * Update the Pi and the code *
 In terminal use the following commands
-    sudo apt-get update
-    sudo apt-get upgrade
+    sudo apt update
+    sudo apt upgrade
 and update the code with ....
 
 

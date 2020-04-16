@@ -10,17 +10,12 @@ class resetScreen:
         self.number_display = 0
 
     def show(self, cycle):
+        # Method used to actually show the window
         self.cycle_data = cycle
         window = tk.Tk()
         window.title("Reset Cycle Count")
         self.number_display = tk.Label(window, fg="red", text=self.number_entry)
         self.number_display.grid(row=0, column=0, columnspan=3)
-
-
-#number_entry = "0"
-#cycle_data = Data()
-
-
 
         keys = [
             ['1', '2', '3'],    
@@ -31,6 +26,7 @@ class resetScreen:
 
 # Commands
         def number(x):
+        # Commands for when each number is pressed
             if x == "DEL":
                 if self.number_entry == "0":
                     self.number_entry = "0"
@@ -50,15 +46,18 @@ class resetScreen:
             self.number_display.config(text=self.number_entry)
     
         def limit():
+            # Sets the Cycle limit to the number shown
             if self.number_entry.isdigit():
                 self.cycle_data.max = int(self.number_entry)
             cycle_limit_number.config(text=self.cycle_data.max)
 
         def done_action():
+            # Closes the window
             window.destroy()
             window.quit()
 
         def count_to_zero():
+            # Resets the cycle count to 0
             self.cycle_data.count = 0
             cycle_count_number.config(text=self.cycle_data.count)
         

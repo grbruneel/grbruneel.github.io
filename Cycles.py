@@ -1,7 +1,4 @@
-# Data class is where all the settings are stored. 
-# Increment increases the count of cycles by one.
-# Save writes a settings.txt file with all the current values
-# Revert_default changes all the settings in the class back to a default state
+# Data class is where all the settings are stored.
 
 class Data:
 
@@ -23,9 +20,11 @@ class Data:
         self.stagger_off = int(lines[7])
 
     def increment(self):
+        # Increases the count of cycles by one.
         self.count = self.count + 1
 
     def save(self):
+        # Writes a settings.txt file with all the current values
         file = open("settings.txt", "w")
         file.write(str(self.max) + "\n")
         file.write(str(self.count) + "\n")
@@ -38,6 +37,7 @@ class Data:
         file.close()
 
     def revert_default(self):
+        # Changes all the settings in the class back to a default state
         self.max = 1000000
         self.count = 0
         self.retract_time = 500
