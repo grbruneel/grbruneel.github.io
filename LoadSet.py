@@ -1,3 +1,5 @@
+# Makes the Screen that lets us set the load
+
 import tkinter as tk
 import platform
 if platform.system() == "Darwin" or platform.system() == "Windows":
@@ -31,6 +33,7 @@ class SettingLoad:
         self.window.mainloop()
 
     def __switch(self):
+        # Switches the activated load from one side to the other.
         self.out.off()
         if self.right:
             self.right = False
@@ -40,6 +43,7 @@ class SettingLoad:
             self.out.rightOn()
     
     def __stop(self):
+        # The stop button that shuts off the load and closes the window.
         self.out.off()
         self.window.destroy()
         self.window.quit()

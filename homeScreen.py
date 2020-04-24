@@ -1,5 +1,5 @@
-# Outputs are on pin 20 and 21
-# Inputs are on pins 5 and 6
+# This runs the home screen 
+
 import tkinter as tk
 from resetScreen import resetScreen
 from Cycles import Data
@@ -8,10 +8,12 @@ from otherSettingScreen import Other
 import platform
 if platform.system() == "Darwin" or platform.system() == "Windows":
     import lapOut as outputs
+    import fakeSendMail as mail
 else:
     import piOut as outputs
+    import sendMail as mail
 import LoadSet
-import time
+from datetime import datetime, timedelta
 
 class home:
     def __init__ (self):
@@ -20,6 +22,7 @@ class home:
 
         # The data and settings information is initialized
         self.cycle_data = Data()
+        self.finish_date = 0
 
         # The subscreens are initialized so "show" can be called on them later
         self.reset_data = resetScreen(self.cycle_data)
@@ -46,7 +49,7 @@ class home:
         self.fontsize = 18
         self.is_fullscreen = True
         if platform.system() != "Darwin" and platform.system() != "Windows":
-            self.window.config(cursor="none") #Hides the mouse when not on a mac
+            self.window.config(cursor="none") #Hides the mouse when on the Pi
         
         # Labels on main screen window
         cycle_count_text = tk.Label(self.window, text="Current Cycle Count", font=(None, self.fontsize))
@@ -55,12 +58,18 @@ class home:
         cycle_limit_text = tk.Label(self.window, text="Cycle Limit", font=(None, self.fontsize))
         cycle_limit_text.grid(row=2, column=0, pady=3)
 
+        time_remaining_text = tk.Label(self.window, text="Estimated Finish", font=(None, self.fontsize))
+        time_remaining_text.grid(row=1, column=2)
+
         # Labels that need to be accessed by methods to change the counts
         self.cycle_limit_number = tk.Label(self.window, text=self.cycle_data.max, font=(None, self.fontsize))
         self.cycle_limit_number.grid(row=2, column=1)
 
         self.cycle_count_number = tk.Label(self.window, text=self.cycle_data.count, font=(None, self.fontsize))
         self.cycle_count_number.grid(row=1, column=1, pady=3)
+
+        self.time_remaining_number = tk.Label(self.window, text="N/A", font=(None, self.fontsize))
+        self.time_remaining_number.grid(row=1, column=3)
 
         # Buttons on the Home Screen
         self.start_Button = tk.Button(self.window, text="START", bg="Green", command=self.__start, font=(None, self.fontsize))
@@ -92,14 +101,22 @@ class home:
         if not platform.system() == "Windows":
             self.window.attributes("-fullscreen", self.is_fullscreen)
         
+        if self.cycle_data.mode == "Cycle":
+            self.start_Button.config(command=self.__cycleStart)
+            self.sensing = True
+            self.__cycle_inputs()
         # Run the window loop
         self.window.mainloop()
 
 # Commands that go with Buttons
     def __start(self):
         # Start button for the thump test mode
+        if self.cycle_data.count % 1000 == 0:
+            self.cycle_data.save()
+            self.__change_finish_date()
         if self.cycle_data.count >= self.cycle_data.max:
             self.__stop()
+            mail.send()
             return
         if self.stagger:
            self.stagger_job = self.window.after(self.cycle_data.stagger_on, self.__pause)
@@ -146,6 +163,9 @@ class home:
         self.previous_cycle_side = False
         self.window.after_cancel(self.stagger_job)
         self.stagger = (self.cycle_data.runtime == "Stagger")
+        self.finish_date = 0
+        self.time_remaining_number.config(text="N/A")
+        self.cycle_data.save()
 
     def __pause(self):
         self.out.off()
@@ -153,6 +173,7 @@ class home:
         print("Pause")
         self.stagger = True
         self.window.after(self.cycle_data.stagger_off, self.__start)
+        self.cycle_data.save()
 
     def __reset_settings(self):
         # Opens the window to change the cycle count
@@ -161,11 +182,13 @@ class home:
         self.reset_data.show(self.cycle_data)
         self.cycle_limit_number.config(text=self.cycle_data.max)
         self.cycle_count_number.config(text=self.cycle_data.count)
+        self.cycle_data.save()
 
     def __time_action(self):
         # Opens the window to change the time settings
         self.__stop()
         self.time_data.show()
+        self.cycle_data.save()
         # Not currently shown on main Screen
 
     def __close_fullscreen(self, Event=None):
@@ -210,7 +233,21 @@ class home:
             self.stagger = True
         elif self.cycle_data.runtime == "Continuous":
             self.stagger = False
+        self.cycle_limit_number.config(text=self.cycle_data.max)
+        self.cycle_count_number.config(text=self.cycle_data.count)
+        self.cycle_data.save()
         
+    def __calculate_time(self):
+        # Returns the number of days left according to the extend and retract time.
+        remaining = (self.cycle_data.retract_time + self.cycle_data.extend_time) * (self.cycle_data.max - self.cycle_data.count)
+        remaining = remaining / 1000
+        now = datetime.today()
+        finish = now + timedelta(seconds=remaining)
+        self.finish_date = finish.strftime("%m/%d/%Y %H:%M")
+        
+    def __change_finish_date(self):
+        self.__calculate_time()
+        self.time_remaining_number.config(text=self.finish_date)
 
     def __nothing(self):
         pass
